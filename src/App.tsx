@@ -36,6 +36,20 @@ function App() {
     actions
   } = useGeoData();
 
+  // Initialize theme on app load
+  useEffect(() => {
+    // Ensure dark mode class is properly set on initial load
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldBeDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+    
+    if (shouldBeDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
   // Check for first-time user and show welcome modal
   useEffect(() => {
     const isFirstTime = dataStorageService.isFirstTimeUser();
@@ -144,7 +158,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
+      <header className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
@@ -152,10 +166,10 @@ function App() {
                 <Brain className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
                   GeoSentiment Lens
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                   Interactive Sentiment Analysis & Geographic Mapping
                 </p>
               </div>
@@ -163,18 +177,18 @@ function App() {
             
             <div className="flex items-center gap-3">
               {/* Processing Status */}
-              <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-lg">
+              <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors duration-300">
                 {getProcessingStatusIcon()}
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">
                   {getProcessingStatusText()}
                 </span>
               </div>
 
               {/* Privacy Indicator */}
               {hasUploadedData && (
-                <div className="flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                <div className="flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/20 rounded-lg transition-colors duration-300">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-sm font-medium text-green-700 dark:text-green-300">
+                  <span className="text-sm font-medium text-green-700 dark:text-green-300 transition-colors duration-300">
                     Private Data
                   </span>
                 </div>
@@ -183,7 +197,7 @@ function App() {
               {hasUploadedData && (
                 <button
                   onClick={clearStoredData}
-                  className="flex items-center gap-2 px-3 py-2 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg text-sm font-medium hover:bg-red-200 dark:hover:bg-red-900/40 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg text-sm font-medium hover:bg-red-200 dark:hover:bg-red-900/40 transition-colors duration-300"
                   title="Clear your private dataset"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -193,7 +207,7 @@ function App() {
               
               <button
                 onClick={() => setShowDocumentation(true)}
-                className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/20 hover:bg-blue-200 dark:hover:bg-blue-900/40 transition-colors"
+                className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/20 hover:bg-blue-200 dark:hover:bg-blue-900/40 transition-colors duration-300"
                 title="Documentation"
               >
                 <Book className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -201,7 +215,7 @@ function App() {
               
               <button
                 onClick={() => setShowInfo(!showInfo)}
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300"
                 title="About"
               >
                 <Info className="h-5 w-5 text-gray-600 dark:text-gray-300" />
@@ -210,7 +224,7 @@ function App() {
               <button
                 onClick={exportData}
                 disabled={data.length === 0}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg font-medium transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg font-medium transition-colors duration-300"
                 title="Export Data"
               >
                 <Download className="h-4 w-4" />
@@ -225,11 +239,11 @@ function App() {
 
       {/* Info Panel */}
       {showInfo && (
-        <div className="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-start gap-3">
               <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-              <div className="text-sm text-blue-800 dark:text-blue-200">
+              <div className="text-sm text-blue-800 dark:text-blue-200 transition-colors duration-300">
                 <p className="font-medium mb-1">Welcome to GeoSentiment Lens!</p>
                 <p className="mb-2">
                   This application analyzes public sentiment and emotions from social media posts and news headlines, 
@@ -249,7 +263,7 @@ function App() {
               </div>
               <button
                 onClick={() => setShowInfo(false)}
-                className="text-blue-600 hover:text-blue-700 ml-auto"
+                className="text-blue-600 hover:text-blue-700 ml-auto transition-colors duration-300"
               >
                 ✕
               </button>
@@ -288,13 +302,13 @@ function App() {
         />
 
         {/* Tab Navigation */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg mb-6 transition-colors duration-300">
           <div className="flex border-b border-gray-200 dark:border-gray-700">
             {tabButtons.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 flex items-center justify-center gap-2 py-4 px-6 font-medium transition-all ${
+                className={`flex-1 flex items-center justify-center gap-2 py-4 px-6 font-medium transition-all duration-300 ${
                   activeTab === tab.id
                     ? 'border-b-2 border-blue-600 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -344,35 +358,35 @@ function App() {
 
         {/* Data Summary */}
         {data.length > 0 && (
-          <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-colors duration-300">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
                     {data.length}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                     Data Points
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
                     {regionData.length}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                     Regions
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
                     {timelineData.length}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                     Time Points
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className={`text-sm font-medium ${
+                  <div className={`text-sm font-medium transition-colors duration-300 ${
                     dataSource === 'uploaded' ? 'text-blue-600 dark:text-blue-400' :
                     dataSource === 'live' ? 'text-green-600 dark:text-green-400' :
                     'text-gray-600 dark:text-gray-400'
@@ -381,23 +395,23 @@ function App() {
                     {dataSource === 'live' && (isLiveActive ? '🔴 Live Feed' : '⏸️ Live Paused')}
                     {dataSource === 'demo' && '📊 Demo Data'}
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-500">
+                  <div className="text-xs text-gray-500 dark:text-gray-500 transition-colors duration-300">
                     Data Source
                   </div>
                 </div>
               </div>
               
               <div className="text-right">
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                   Last updated: {new Date().toLocaleTimeString()}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-500">
+                <div className="text-xs text-gray-500 dark:text-gray-500 transition-colors duration-300">
                   {loading ? 'Processing...' : 
                    dataSource === 'uploaded' ? 'Your private dataset' : 
                    dataSource === 'live' ? 'Live data' : 'Sample data'}
                 </div>
                 {dataSource === 'uploaded' && (
-                  <div className="text-xs text-green-600 dark:text-green-400 mt-1">
+                  <div className="text-xs text-green-600 dark:text-green-400 mt-1 transition-colors duration-300">
                     🔒 Private & Secure
                   </div>
                 )}
@@ -421,9 +435,9 @@ function App() {
       />
 
       {/* Footer */}
-      <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12">
+      <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="text-center text-gray-600 dark:text-gray-400">
+          <div className="text-center text-gray-600 dark:text-gray-400 transition-colors duration-300">
             <p className="text-sm">
               GeoSentiment Lens - Advanced sentiment analysis and geographic visualization
             </p>
