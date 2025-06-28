@@ -11,6 +11,7 @@ import { LivePreview } from './components/LivePreview';
 import { AppDocumentation } from './components/AppDocumentation';
 import { WelcomeModal } from './components/WelcomeModal';
 import { ThemeToggle } from './components/ThemeToggle';
+import { BoltBadge } from './components/BoltBadge';
 import { SentimentData } from './types';
 import { dataStorageService } from './services/dataStorage';
 
@@ -172,6 +173,10 @@ function App() {
                 <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                   Interactive Sentiment Analysis & Geographic Mapping
                 </p>
+              </div>
+              {/* Bolt Badge in Header */}
+              <div className="ml-4">
+                <BoltBadge />
               </div>
             </div>
             
@@ -437,13 +442,19 @@ function App() {
       {/* Footer */}
       <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="text-center text-gray-600 dark:text-gray-400 transition-colors duration-300">
-            <p className="text-sm">
-              GeoSentiment Lens - Advanced sentiment analysis and geographic visualization
-            </p>
-            <p className="text-xs mt-1">
-              Built with React, TypeScript, Tailwind CSS, and Leaflet • 🔒 Privacy-First Design
-            </p>
+          <div className="flex items-center justify-between">
+            <div className="text-center text-gray-600 dark:text-gray-400 transition-colors duration-300">
+              <p className="text-sm">
+                GeoSentiment Lens - Advanced sentiment analysis and geographic visualization
+              </p>
+              <p className="text-xs mt-1">
+                Built with React, TypeScript, Tailwind CSS, and Leaflet • 🔒 Privacy-First Design
+              </p>
+            </div>
+            {/* Additional Bolt Badge in Footer */}
+            <div className="hidden sm:block">
+              <BoltBadge />
+            </div>
           </div>
         </div>
       </footer>
